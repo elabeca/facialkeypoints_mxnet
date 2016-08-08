@@ -5,9 +5,6 @@ from pandas.io.parsers import read_csv
 from sklearn.utils import shuffle
 import pdb as pdb
 
-FTRAIN = '/home/piyush/Downloads/Kaggle/Facial-Keypoints/training.csv'
-FTEST = '/home/piyush/Downloads/Kaggle/Facial-Keypoints/test.csv'
-
 def augment(X, y):
   """
   Augment the training set
