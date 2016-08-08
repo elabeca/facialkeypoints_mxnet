@@ -12,6 +12,9 @@ import os
 
 
 # lenet2 model
+# eg..
+# python ./main.py -data /home/piyush/Downloads/Kaggle/Facial-Keypoints/ -epochs 30 -model lenet2  -augment
+
 # NO AUGMENT:: 2016-08-08 22:00:32,667 - Epoch[29] Validation-rmse=0.070147
 #    AUGMENT:: 2016-08-08 21:59:52,200 - Epoch[29] Validation-rmse=0.065981
 
