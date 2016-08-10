@@ -3,11 +3,50 @@ import numpy as np
 import matplotlib.pyplot as pyplot
 from pandas.io.parsers import read_csv
 from sklearn.utils import shuffle
+import pdb as pdb
 
-FTRAIN = 'training.csv'
-FTEST = 'test.csv'
+def augment(X, y):
+  """
+  Augment the training set
+  """
 
-def load(test=False, cols=None):
+  flip_indices = [
+      (0, 2), (1, 3),
+      (4, 8), (5, 9), (6, 10), (7, 11),
+      (12, 16), (13, 17), (14, 18), (15, 19),
+      (22, 24), (23, 25),
+      ]
+
+  def flipData(X, y):
+
+    # Flip all images LR-wise
+    Xf = X[:,:,:, ::-1]
+  
+    # Flip label x-cordinates LR wise
+    yf = y.reshape((np.shape(y)[0], 15, 2))
+  
+    # Flip x coords LR wise by changing sign
+    yf[:,:,0] = yf[:,:,0] * -1
+  
+    # Save to new struct
+    yf = yf.reshape((np.shape(yf)[0], 30))
+  
+    # Swap places, e.g. left_eye_center_x -> right_eye_center_x
+    for a, b in flip_indices:
+        yf[:, a] =  yf[:, b]
+        yf[:, b] =  yf[:, a]
+
+    return Xf, yf
+
+  Xf, yf = flipData(X, y)
+  #Xf, yf = flipData(Xf, yf) # get back original
+  
+  X = np.concatenate((X, Xf), axis=0)
+  y = np.concatenate((y, yf), axis=0)
+
+  return X, y
+
+def load(test=False, cols=None, FTEST='', FTRAIN=''):
   """Loads data from FTEST if *test* is True, otherwise from FTRAIN.
   Pass a list of *cols* if you're only interested in a subset of the
   target columns.
@@ -41,10 +80,11 @@ def load(test=False, cols=None):
   else:
     y = None
 
+  #pdb.set_trace()
   return X, y
 
-def load2d(test=False, cols=None):
-  X, y = load(test=test, cols=cols)
+def load2d(test=False, cols=None, FTEST='', FTRAIN=''):
+  X, y= load(test=test, cols=cols, FTEST=FTEST, FTRAIN=FTRAIN)
   X = X.reshape(-1, 1, 96, 96)
   return X, y
 
