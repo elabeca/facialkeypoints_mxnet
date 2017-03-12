@@ -16,9 +16,6 @@ def mlp():
 
     return mlp
 
-
-
-
 def lenet2():
 
     data    = mx.symbol.Variable('data')
